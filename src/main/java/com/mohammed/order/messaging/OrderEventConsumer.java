@@ -4,7 +4,7 @@ import com.mohammed.order.messaging.event.OrderCreatedEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
-@ApplicationScoped
+//@ApplicationScoped
 public class OrderEventConsumer {
     @Incoming("order-events-in")
     public void consume(OrderCreatedEvent event) {
