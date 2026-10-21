@@ -63,4 +63,10 @@ public class OrderResource {
         return orderService.update(dto,id);
 
     }
+    @GET
+    @Path("/slow")
+    public Response slow() throws InterruptedException {
+        Thread.sleep(5000);
+        return Response.ok("finished").build();
+    }
 }
