@@ -19,13 +19,14 @@ import static org.mockito.Mockito.*;
 class OrderServiceTest {
     private OrderRepository orderRepository;
     private OrderService orderService;
-    private OrderEventProducer orderEventProducer;
+
     @BeforeEach
     void setup() {
 
         orderRepository = mock(OrderRepository.class);
+        OrderEventProducer orderEventProducer = mock(OrderEventProducer.class);
 
-        orderService = new OrderService(orderRepository,orderEventProducer);
+        orderService = new OrderService(orderRepository, orderEventProducer);
     }
     @Test
     void shouldReturnOrderWhenOrderExists() {
