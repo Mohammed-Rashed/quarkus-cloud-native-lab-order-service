@@ -13,11 +13,21 @@ public class OrderEventProducer {
     Emitter<Record<String, OrderCreatedEvent>> emitter;
     public void send(OrderCreatedEvent event) {
         System.out.println("Sending Kafka event: " + event);
+
         emitter.send(
                 Record.of(
                         event.orderId().toString(),
                         event
                 )
-        );
+        ).whenComplete((success, failure) -> {
+
+            if (failure != null) {
+                System.err.println("Kafka send FAILED: " + failure.getMessage());
+                failure.printStackTrace();
+            } else {
+                System.out.println("Kafka send SUCCESS");
+            }
+
+        });
     }
 }
