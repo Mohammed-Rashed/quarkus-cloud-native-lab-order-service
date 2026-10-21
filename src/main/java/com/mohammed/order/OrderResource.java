@@ -11,11 +11,14 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 
 @Path("/orders")
 public class OrderResource {
 
     private final OrderService orderService;
+    private static final AtomicInteger unstableCounter = new AtomicInteger(0);
     public OrderResource(OrderService orderService) {
         this.orderService = orderService;
     }
@@ -68,5 +71,25 @@ public class OrderResource {
     public Response slow() throws InterruptedException {
         Thread.sleep(5000);
         return Response.ok("finished").build();
+    }
+
+    @GET
+    @Path("/unstable")
+    public Response unstable() {
+
+        int attempt = unstableCounter.incrementAndGet();
+
+        System.out.println("Unstable endpoint attempt: " + attempt);
+
+        if (attempt % 3 != 0) {
+            return Response
+                    .status(Response.Status.SERVICE_UNAVAILABLE)
+                    .entity("Temporary failure - attempt " + attempt)
+                    .build();
+        }
+
+        return Response
+                .ok("Success - attempt " + attempt)
+                .build();
     }
 }
