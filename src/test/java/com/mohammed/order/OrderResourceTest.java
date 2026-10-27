@@ -14,6 +14,11 @@ public class OrderResourceTest {
                 .when()
                 .get("/orders/999999")
                 .then()
-                .statusCode(500);
+                .statusCode(404)
+                .body("status", is(404))
+                .body(
+                        "message",
+                        is("Order with ID 999999 not found")
+                );
     }
 }
